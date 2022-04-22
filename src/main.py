@@ -15,38 +15,42 @@ time.sleep(2)
 
 # setup DC motor
 GPIO.setmode(GPIO.BCM)
-Motor1A = 24
-Motor1B = 23
-Motor1E = 25
+Motor1A = 12
+Motor1B = 13
+Motor1E = 5
 GPIO.setup(Motor1A,GPIO.OUT)  # all pins as outputs
 GPIO.setup(Motor1B,GPIO.OUT)
 GPIO.setup(Motor1E,GPIO.OUT)
 
 
 def onMotor():
-    # set up GPIO pins
 	GPIO.output(Motor1A,GPIO.HIGH)
 	GPIO.output(Motor1B,GPIO.LOW)
 	GPIO.output(Motor1E,GPIO.HIGH)
 
 def offMotor():
     GPIO.output(Motor1E,GPIO.LOW)
-
+    
+def destroy():
+    GPIO.cleanup()
 
 if __name__ == '__main__':
-    while True:
-        if scd30.get_data_ready():
-            m = scd30.read_measurement()
-            if m is not None:
-                co2, temp, rh = m[0], m[1], m[2]
-                # create socket and send data to phoenix socket
-                print(f"CO2: {m[0]:.2f}ppm, temp: {m[1]:.2f}'C, rh: {m[2]:.2f}%")
-            time.sleep(2)
-        else:
-            time.sleep(0.2)
-        
-        # if relative humidity level is less than 95%, turn on DC motor (i.e. automatic water spray)
-        if rh < 95:
-            onMotor()
-        else:
-            offMotor()
+    try:
+        while True:
+            if scd30.get_data_ready():
+                m = scd30.read_measurement()
+                if m is not None:
+                    co2, temp, rh = m[0], m[1], m[2]
+                    # create socket and send data to phoenix socket
+                    print(f"CO2: {m[0]:.2f}ppm, temp: {m[1]:.2f}'C, rh: {m[2]:.2f}%")
+                time.sleep(2)
+            else:
+                time.sleep(0.2)
+            
+            # if relative humidity level is less than 95%, turn on DC motor (i.e. automatic water spray)
+            if rh < 95:
+                onMotor()
+            else:
+                offMotor()
+    except KeyboardInterrupt:
+        destroy()
