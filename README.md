@@ -15,12 +15,12 @@ Mushrooms are very hardy fungi and can grow in many places. However, the extent 
 - Raspberry Pi 3 Mobel B+
 
 #### IoT Sensors
-- SCD40-D-R1
-- TT DC Motor
+- [SCD40-D-R1](https://sg.element14.com/sensirion/scd40-d-r1/gas-detection-sensor-co2-40000ppm/dp/3677905)
+- [TT DC Motor](https://www.adafruit.com/product/3777)
 
 #### Additional Hardware Parts
-- L239D Motor Driver IC
-- 5v Battery 
+- [L239D Motor Driver IC](https://shopee.sg/L293D-L293-L293B-DIP-SOP-Push-Pull-Four-Channel-Stepper-Motor-Driver-IC-i.161496038.6002004709)
+- 5V Battery 
 
 ### Circuit Diagram
 ![Circuit Diagram](/images/circuit_diagram.png)
