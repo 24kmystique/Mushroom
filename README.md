@@ -27,6 +27,9 @@ Mushrooms are very hardy fungi and can grow in many places. However, the extent 
 
 ### How to Run the Project
 Run `/src/main.py` on any IDE in RPI.
+The client side code has a default topic tied to a public realm : 42
+Visit [BigBrain Realm 42](https://bigbrain.link/realms/42/42) to access the dashboard.
+Only snippets of server side code can be found as its deeply integrated with our codebase
 
 
 ## Resources

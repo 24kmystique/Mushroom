@@ -1,6 +1,29 @@
 from scd30_i2c import SCD30
 import RPi.GPIO as GPIO
 import time
+import phxsocket
+import os
+
+socket = phxsocket.Client("wss://bigbrain.link/socket/websocket")
+socket.on_close = lambda socket: socket.connect ## On disconnection attempt to reconnect
+
+def spray(payload):
+        ## call back function from event listener from server to spray
+        onMotor()
+        time.sleep(5)
+        offMotor()
+
+def connect_to_realm(socket):
+        if os.getenv("REALM_NAME"):
+                # fetch from system env if set during firmware init
+                topic = "archetype:realm:" + os.getenv("REALM_NAME")
+        else:
+                topic = "archetype:realm:42" # default public topic instantiation @ 42
+        channel = socket.channel(topic)
+        resp = channel.join()
+
+socket.on_open = connect_to_realm
+connection = socket.connect(blocking=False)
 
 # variables
 co2, temp, rh = 0, 0, 0
@@ -42,6 +65,7 @@ if __name__ == '__main__':
                 if m is not None:
                     co2, temp, rh = m[0], m[1], m[2]
                     # create socket and send data to phoenix socket
+                    connection.push("echo", [m[2], m[1], m[0]])
                     print(f"CO2: {m[0]:.2f}ppm, temp: {m[1]:.2f}'C, rh: {m[2]:.2f}%")
                 time.sleep(2)
             else:
